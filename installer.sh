@@ -156,11 +156,11 @@ if echo "$answer" | grep -iq "^y" ;then
   rm -rf .git
   autoreconf -i -f;
   ./configure --with-rootsys=$ROOTSYS --with-delphes=$homeDIR/Delphes --with-pythia=$homeDIR/pythia8 --with-madgraph=$homeDIR/MG5 --with-hepmc=$homeDIR/HepMC2
-  echo "[installer] installing CheckMATE";
-  make -j4
-  cd $homeDIR
   echo "[installer] Replacing AnalysisHandler.cc with the local version with a fix for muon isolation."
-  cp AnalysisHandler.cc ./CheckMATE/tools/fritz/src/analysishandler/AnalysisHandler.cc
+  cp $homeDIR/AnalysisHandler.cc ./tools/fritz/src/analysishandler/AnalysisHandler.cc
+  echo "[installer] installing CheckMATE";
+  make -j4  
+  cd $homeDIR
 fi
 
 
