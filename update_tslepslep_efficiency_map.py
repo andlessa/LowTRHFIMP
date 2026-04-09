@@ -18,7 +18,8 @@ from typing import Dict, List, Tuple
 MassPoint = Tuple[int, int]
 AccByMass = Dict[MassPoint, Dict[str, str]]
 
-SIGNAL_FILE_RE = re.compile(r"^TSlepSlep_(\d+)_(\d+)_signal\.dat$")
+SIGNAL_FILE_RE = re.compile(r"^SlepSlep_atlas_\d{4}_\d{5}_signal\.dat$")
+MASS_DIR_RE = re.compile(r"^SlepSlep_(\d+)_(\d+)_SLHA$")
 CUTS_DIR_RE = re.compile(r"^SR(DF|SF)_([01])([a-i])_cuts$")
 SR_LINE_RE = re.compile(r"^(SR-[A-Z]{2}-[01]J[a-i])\s+\S+\s+\S+\s+(\S+)")
 
@@ -37,10 +38,16 @@ def collect_acc_values(orig_dir: Path) -> AccByMass:
     """Collect all mass-point Acc maps from SlepSlep_*_signal.dat files."""
     acc_by_mass: AccByMass = {}
     for path in sorted(orig_dir.glob("SlepSlep*/analysis/SlepSlep_*_signal.dat")):
-        m = SIGNAL_FILE_RE.match(path.name)
-        if not m:
+        m_file = SIGNAL_FILE_RE.match(path.name)
+        if not m_file:
             continue
-        mass_point = (int(m.group(1)), int(m.group(2)))
+
+        # Mass point is encoded in run directory: SlepSlep_<m_slep>_<m_lsp>_SLHA
+        m_mass = MASS_DIR_RE.match(path.parent.parent.name)
+        if not m_mass:
+            continue
+
+        mass_point = (int(m_mass.group(1)), int(m_mass.group(2)))
         acc_by_mass[mass_point] = parse_signal_file(path)
     if not acc_by_mass:
         raise RuntimeError(f"No TSlepSlep signal files found in {orig_dir}")
