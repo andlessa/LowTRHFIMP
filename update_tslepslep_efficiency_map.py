@@ -15,6 +15,7 @@ import re
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+
 MassPoint = Tuple[int, int]
 AccByMass = Dict[MassPoint, Dict[str, str]]
 
