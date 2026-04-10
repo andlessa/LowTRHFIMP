@@ -60,6 +60,7 @@ if echo "$answer" | grep -iq "^y" ;then
 	mkdir MG5;
 	echo "[installer] getting MadGraph5"; wget $URL 2>/dev/null || curl -O $URL; 
 	tar -zxf $madgraph -C MG5 --strip-components 1;
+	cp mg5_configuration.txt MG5/input/;
 fi
 
 #Get HepMC tarball
