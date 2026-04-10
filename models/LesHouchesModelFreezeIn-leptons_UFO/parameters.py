@@ -263,7 +263,7 @@ ms0 = Parameter(name = 'ms0',
                 value = 125,
                 texname = '\\text{ms0}',
                 lhablock = 'MASS',
-                lhacode = [ 255 ])
+                lhacode = [ 5000022 ])
 
 mHE = Parameter(name = 'mHE',
                 nature = 'external',
@@ -271,7 +271,7 @@ mHE = Parameter(name = 'mHE',
                 value = 100.,
                 texname = '\\text{mHE}',
                 lhablock = 'MASS',
-                lhacode = [ 111 ])
+                lhacode = [ 5000011 ])
 
 WZ = Parameter(name = 'WZ',
                nature = 'external',
@@ -311,7 +311,7 @@ ws0 = Parameter(name = 'ws0',
                 value = 0.,
                 texname = '\\text{ws0}',
                 lhablock = 'DECAY',
-                lhacode = [ 255 ])
+                lhacode = [ 5000022 ])
 
 wHE = Parameter(name = 'wHE',
                 nature = 'external',
@@ -319,7 +319,7 @@ wHE = Parameter(name = 'wHE',
                 value = 1.,
                 texname = '\\text{wHE}',
                 lhablock = 'DECAY',
-                lhacode = [ 111 ])
+                lhacode = [ 5000011 ])
 
 CKM1x1 = Parameter(name = 'CKM1x1',
                    nature = 'internal',

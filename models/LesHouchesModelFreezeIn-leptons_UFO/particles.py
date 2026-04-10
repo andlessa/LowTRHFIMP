@@ -385,7 +385,7 @@ G__plus__ = Particle(pdg_code = 251,
 
 G__minus__ = G__plus__.anti()
 
-P__tilde__s0 = Particle(pdg_code = 255,
+P__tilde__s0 = Particle(pdg_code = 5000022,
                         name = '~s0',
                         antiname = '~s0',
                         spin = 1,
@@ -399,7 +399,7 @@ P__tilde__s0 = Particle(pdg_code = 255,
                         LeptonNumber = 0,
                         Y = 0)
 
-P__tilde__he = Particle(pdg_code = 111,
+P__tilde__he = Particle(pdg_code = 5000011,
                         name = '~he',
                         antiname = '~HE',
                         spin = 2,
