@@ -195,7 +195,8 @@ def main(parfile,verbose):
 
         for pTag in processTags:
             pName = newParser.get(pTag,"Name")
-            newParser.set(pTag,"MGparam",f)
+            if 'Events' not in newParser.options(pTag):
+                newParser.set(pTag,"MGparam",f)
             if useSLHA:
                 if pTag in xsecDict:
                     newParser.set(pTag,"XSect", "%1.5g %s" %(xsecDict[pTag].value,unit))
