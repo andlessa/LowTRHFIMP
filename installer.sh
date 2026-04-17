@@ -145,13 +145,8 @@ echo -n "Install CheckMATE (y/n)? "
 read answer
 if echo "$answer" | grep -iq "^y" ;then
   echo "[installer] getting CheckMATE";
-  git clone git@github.com:CheckMATE2/checkmate2.git CheckMATE
-  cd CheckMATE
-  latest=`git ls-remote --tags  --sort=committerdate | cut -d/ -f3- | tail -n1`
-  cd $homeDIR
-  rm -rf CheckMATE
-  echo "Cloning version $latest"
-  git clone --branch $latest git@github.com:CheckMATE2/checkmate2.git CheckMATE;
+  echo "Cloning version 2.5.1"
+  git clone --branch v2.5.1 git@github.com:CheckMATE2/checkmate2.git CheckMATE;
   cd CheckMATE;
   alias python=python3
   rm -rf .git
