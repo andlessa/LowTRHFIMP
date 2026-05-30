@@ -553,6 +553,9 @@ def getModelInfo(bannerFile : str, llpPDG : int) -> Dict[str, Union[float,int]]:
                 if abs(pid) in slhaData.blocks['MASS']:
                     modelInfoDict.setdefault(f'm{int(abs(pid))}', 
                                              slhaData.blocks['MASS'][abs(pid)])
+    if 'FRBLOCK' in slhaData.blocks:
+        modelInfoDict.update({k:v for k,v in slhaData.blocks['FRBLOCK'].items()})
+
     return modelInfoDict
 
 def saveOutput(resultsDict: Dict[str, Any],outputFile: str):
