@@ -50,7 +50,7 @@ if echo "$answer" | grep -iq "^y" ;then
   fi
   echo "[installer] Installing DelphesLLP";
   
-  wget https://github.com/llprecasting/recastingCodes/blob/ec69aa3cb1cad71266e3e890d16e358cfed73d3d/Delphes_LLP/DelphesLLP.tar.gz
+#  wget https://github.com/llprecasting/recastingCodes/blob/ec69aa3cb1cad71266e3e890d16e358cfed73d3d/Delphes_LLP/DelphesLLP.tar.gz
 #  cp ../../Delphes_LLP/DelphesLLP.tar.gz ./
   tar -zxf DelphesLLP.tar.gz;
   cd DelphesLLP;
