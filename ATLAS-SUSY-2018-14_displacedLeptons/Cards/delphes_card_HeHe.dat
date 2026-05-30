@@ -73,7 +73,10 @@ module PdgCodeFilter PDGFilter {
   set OutputArray particles
   set Invert true
   add PdgCode {1000022}
+  add PdgCode {5000022}
   add PdgCode {1000039}
+  add PdgCode {5000011}
+  add PdgCode {-5000011}
   add PdgCode {1000011}
   add PdgCode {-1000011}
   add PdgCode {1000013}
@@ -286,6 +289,7 @@ module SimpleCalorimeter ECal {
   add EnergyFraction {14} {0.0}
   add EnergyFraction {16} {0.0}
   add EnergyFraction {1000022} {0.0}
+  add EnergyFraction {5000022} {0.0}
   add EnergyFraction {1000039} {0.0}  
   add EnergyFraction {1000023} {0.0}
   add EnergyFraction {1000025} {0.0}
@@ -295,6 +299,7 @@ module SimpleCalorimeter ECal {
   add EnergyFraction {1000024} {0.0}  
   add EnergyFraction {1000037} {0.0}    
   add EnergyFraction {1000011} {0.0}
+  add EnergyFraction {5000011} {0.0}
   add EnergyFraction {2000011} {0.0}          
   add EnergyFraction {1000013} {0.0}      
   add EnergyFraction {2000013} {0.0}      
@@ -375,6 +380,7 @@ module SimpleCalorimeter HCal {
   add EnergyFraction {14} {0.0}
   add EnergyFraction {16} {0.0}
   add EnergyFraction {1000022} {0.0}
+  add EnergyFraction {5000022} {0.0}
   add EnergyFraction {1000039} {0.0}  
   add EnergyFraction {1000023} {0.0}
   add EnergyFraction {1000025} {0.0}
@@ -384,6 +390,7 @@ module SimpleCalorimeter HCal {
   add EnergyFraction {1000024} {0.0}  
   add EnergyFraction {1000037} {0.0}    
   add EnergyFraction {1000011} {0.0}
+  add EnergyFraction {5000011} {0.0}
   add EnergyFraction {2000011} {0.0}          
   add EnergyFraction {1000013} {0.0}      
   add EnergyFraction {2000013} {0.0}      
@@ -555,6 +562,8 @@ module BSMFilter LLPFilter {
   # Select sleptons
   add PdgCode {1000011}
   add PdgCode {-1000011}
+  add PdgCode {5000011}
+  add PdgCode {-5000011}
   add PdgCode {1000013}
   add PdgCode {-1000013}
   add PdgCode {1000015}
