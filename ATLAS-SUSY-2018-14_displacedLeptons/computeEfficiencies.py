@@ -413,7 +413,7 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description='Analyse the Delphes output to produce efficiencies for the ATLAS-SUSY-2019-18 DT search')
     parser.add_argument('-i','--input', help='Path to  Delphes ROOT file or to a folder containing Delphes ROOT files with the event samples to be analysed.')
-    parser.add_argument('-l','--llpPDG',help='LLP PDG [1000011]',type=int, required=False, default=1000011)
+    parser.add_argument('-l','--llpPDG',help='LLP PDG [5000011]',type=int, required=False, default=5000011)
     parser.add_argument('-n', '--ncpus',type=int,default=1,help='number of parallel jobs to run when running over multiple files [default=1].')
     parser.add_argument('-v', '--verbose', default='info',
                         help='verbose level (debug, info, warning or error). Default is warning')
