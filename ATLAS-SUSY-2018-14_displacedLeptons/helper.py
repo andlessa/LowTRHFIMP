@@ -505,9 +505,9 @@ def count_tracker_layer_crossings(R0, z0, vR, vz, tol=1e-9):
     }
 
 
-def getModelInfo(bannerFile : str, llpPDG : int) -> Dict[str, Union[float,int]]:
+def getModelInfo(bannerFile : str, llpPDG : int) -> Dict[str, Union[float,int,str,None]]:
 
-    modelInfoDict : Dict[str, Union[float,int]] = {'llpPDG' : llpPDG}
+    modelInfoDict : Dict[str, Union[float,int,str,None]] = {'llpPDG' : llpPDG}
     slhaData = None
     with open(bannerFile,'r') as ff:
         data = ff.read()
@@ -554,7 +554,7 @@ def getModelInfo(bannerFile : str, llpPDG : int) -> Dict[str, Union[float,int]]:
                     modelInfoDict.setdefault(f'm{int(abs(pid))}', 
                                              slhaData.blocks['MASS'][abs(pid)])
     if 'FRBLOCK' in slhaData.blocks:
-        modelInfoDict.update({k:v for k,v in slhaData.blocks['FRBLOCK'].items()})
+        modelInfoDict.update({f'frblock_{k}':v for k,v in slhaData.blocks['FRBLOCK'].items()})
 
     return modelInfoDict
 
