@@ -49,9 +49,10 @@ if echo "$answer" | grep -iq "^y" ;then
     exit
   fi
   echo "[installer] Installing DelphesLLP";
-  
-#  wget https://github.com/llprecasting/recastingCodes/blob/ec69aa3cb1cad71266e3e890d16e358cfed73d3d/Delphes_LLP/DelphesLLP.tar.gz
-#  cp ../../Delphes_LLP/DelphesLLP.tar.gz ./
+  if [ ! -f "DelphesLLP.tar.gz" ]; then
+     echo "[installer] Trying to downloading DelphesLLP.tar.gz from https://github.com/llprecasting/recastingCodes"
+     wget https://github.com/llprecasting/recastingCodes/raw/refs/heads/main/Delphes_LLP/DelphesLLP.tar.gz
+  fi   
   tar -zxf DelphesLLP.tar.gz;
   cd DelphesLLP;
   export PYTHIA8=$pythiaDir;
