@@ -1,7 +1,7 @@
 
 import numpy as np
 import itertools
-from scipy.interpolate import  griddata
+from scipy.interpolate import  griddata, splprep, splev
 from matplotlib import pyplot as plt
 from scipy.spatial import Delaunay
 
@@ -96,6 +96,9 @@ def _stitch_segments(segments_t, segments_xy, tol_t=1e-10):
                 if next_seg is None:
                     return
 
+                if next_end is None:
+                    return
+
                 unused.remove(next_seg)
 
                 # If matched endpoint is 0, opposite is 1; if matched is 1, opposite is 0
@@ -123,14 +126,78 @@ def _stitch_segments(segments_t, segments_xy, tol_t=1e-10):
 
     return curves
 
+def _resample_curve_spline(curve, k=1, smoothing=0.0, points_factor=1.0, tol=1e-14):
+    """
+    Resample a polyline with a parametric spline.
+
+    Args:
+        curve: array of shape (N, 2)
+        k: spline order (1=linear, 2=quadratic)
+        smoothing: scipy splprep smoothing parameter s
+        points_factor: output density multiplier relative to input points
+    """
+    curve = np.asarray(curve, dtype=float)
+    if curve.ndim != 2 or curve.shape[1] != 2 or curve.shape[0] < 2:
+        return curve
+
+    # Remove duplicate consecutive points to avoid spline singularities.
+    clean = [curve[0]]
+    for p in curve[1:]:
+        if np.linalg.norm(p - clean[-1]) > tol:
+            clean.append(p)
+    curve = np.asarray(clean, dtype=float)
+
+    if curve.shape[0] < 2:
+        return curve
+
+    closed = np.linalg.norm(curve[0] - curve[-1]) <= tol
+    if closed and curve.shape[0] > 2:
+        # splprep(per=True) handles closure internally; avoid duplicate end point.
+        curve = curve[:-1]
+
+    n = curve.shape[0]
+    if n < 2:
+        return curve
+
+    k = int(max(1, k))
+    k = min(k, n - 1)
+
+    n_out = int(np.ceil(max(2.0, n * max(1.0, float(points_factor)))))
+    n_out = max(n_out, n)
+
+    try:
+        tck, _ = splprep(
+            [curve[:, 0], curve[:, 1]],
+            s=float(max(0.0, smoothing)),
+            k=k,
+            per=bool(closed)
+        )
+        u_new = np.linspace(0.0, 1.0, n_out, endpoint=not closed)
+        x_new, y_new = splev(u_new, tck)
+        out = np.column_stack([x_new, y_new])
+        if closed:
+            out = np.vstack([out, out[0]])
+        return out
+    except Exception:
+        # If spline fitting fails (degenerate geometry), keep original contour.
+        return curve
+
 def iso_contours_unstructured(
     x, y, z, z0,
     logx=False, logy=False, logz=False,
     qhull_options="Qbb Qc Qz Q12",
-    tol_t=1e-10
+    tol_t=1e-10,
+    interpolation="linear",
+    smoothing=0.0,
+    points_factor=1.0
 ):
     """
     Extract contour curve(s) z=z0 from unstructured (x,y,z) points.
+
+        Optional post-processing can improve visual smoothness:
+            - interpolation="quadratic": resample each contour with quadratic splines
+            - smoothing>0: spline smoothing parameter passed to scipy splprep
+            - points_factor>1: denser sampling along the contour
 
     Returns:
         list of arrays, each with shape (Ni, 2), in original (x,y) coordinates.
@@ -213,6 +280,27 @@ def iso_contours_unstructured(
         segments_xy.append(np.vstack([a_xy, b_xy]))
 
     curves = _stitch_segments(segments_t, segments_xy, tol_t=tol_t)
+
+    interp = str(interpolation).lower()
+    if interp not in ("linear", "quadratic"):
+        raise ValueError("interpolation must be 'linear' or 'quadratic'.")
+
+    if smoothing < 0:
+        raise ValueError("smoothing must be >= 0.")
+
+    k = 1 if interp == "linear" else 2
+    if (k > 1) or (smoothing > 0) or (points_factor > 1):
+        curves = [
+            _resample_curve_spline(
+                c,
+                k=k,
+                smoothing=smoothing,
+                points_factor=points_factor,
+                tol=tol_t
+            )
+            for c in curves
+        ]
+
     return curves
 
 def interpolateData(x,y,z,nx=200,ny=200,method='linear',fill_value=np.nan,xnew=None,ynew=None):
